@@ -1,0 +1,106 @@
+> show dbs
+admin       0.000GB
+aula        0.000GB
+cadastrodb  0.000GB
+config      0.000GB
+local       0.000GB
+users       0.002GB
+> use aula
+switched to db aula
+> show collections
+livros
+> db.livros.find().count()
+431
+> db.livros.find({isbn:{$lte: "1000000000"}}).count()
+4
+> db.livros.find({isbn:{$lte: "1617200000"}}).count()
+22
+> db.livros.find({isbn:{$lte: "1617200000"}},{"title":1,"_id":0})
+{ "title" : "Designing Hard Software" }
+{ "title" : "Graphics File Formats" }
+{ "title" : "Visual Object Oriented Programming" }
+{ "title" : "Illustrated Guide to HTTP" }
+{ "title" : "Object Technology Centers of Excellence" }
+{ "title" : "Doing IT Right" }
+{ "title" : "Power-3D" }
+{ "title" : "SNA and TCP/IP Enterprise Networking" }
+{ "title" : "Comprehensive Networking Glossary and Acronym Guide" }
+{ "title" : "Internet BBSs" }
+{ "title" : "Planning and Managing ATM Networks" }
+{ "title" : "Client/Server Applications on ATM Networks" }
+{ "title" : "Working with Objects" }
+{ "title" : "Microsoft Office Essentials" }
+{ "title" : "Personal Videoconferencing" }
+{ "title" : "Multiprotocol over ATM" }
+{ "title" : "Making Sense of Java" }
+{ "title" : "Implementing PeopleSoft Financials" }
+{ "title" : "Multimedia Computing" }
+{ "title" : "TCP/IP Programming for OS/2" }
+Type "it" for more
+> db.livros.insertMany([
+... {"title" : "SaciPererê", "isbn" : "100", "pageCount" : 0, "publishedDate": ISODate("2000-10-01T07:00:00Z"), "status" : "PUBLISH", "authors" : [ ], "categories" : [ ]},
+... {"title" : "A Cuca", "isbn" : "99", "pageCount" : 0, "publishedDate": ISODate("2000-10-01T07:00:00Z"), "status" : "PUBLISH", "authors" : [ ], "categories" : [ ]},
+... {"title" : "Curupira", "isbn" : "98", "pageCount" : 0, "publishedDate": ISODate("2000-10-01T07:00:00Z"), "status" : "PUBLISH", "authors" : [ ], "categories" : [ ]},
+... {"title" : "JecaTatu", "isbn" : "97", "pageCount" : 0, "publishedDate": ISODate("2000-10-01T07:00:00Z"), "status" : "PUBLISH", "authors" : [ ], "categories" : [ ]}
+... ]);
+{
+        "acknowledged" : true,
+        "insertedIds" : [
+                ObjectId("6057a44eae32cc26c83592ac"),
+                ObjectId("6057a44eae32cc26c83592ad"),
+                ObjectId("6057a44eae32cc26c83592ae"),
+                ObjectId("6057a44eae32cc26c83592af")
+        ]
+}
+> db.livros.find({"isbn":{$lte:"100000"}}).count()
+5
+> db.livros.find({isbn:{$lte: "100000"}}).pretty().skip(2)
+{
+        "_id" : 519,
+        "title" : "Multimedia Computing",
+        "isbn" : "020152029X",
+        "pageCount" : 0,
+        "publishedDate" : ISODate("1993-09-01T07:00:00Z"),
+        "status" : "PUBLISH",
+        "authors" : [
+                "Matthew E. Hodges"
+        ],
+        "categories" : [ ]
+}
+{
+        "_id" : 530,
+        "title" : "Implementing SAP R/3, Second Edition",
+        "isbn" : "013889213X",
+        "pageCount" : 0,
+        "publishedDate" : ISODate("1997-09-01T07:00:00Z"),
+        "status" : "PUBLISH",
+        "authors" : [ ],
+        "categories" : [ ]
+}
+{
+        "_id" : ObjectId("6057a44eae32cc26c83592ac"),
+        "title" : "SaciPererê",
+        "isbn" : "100",
+        "pageCount" : 0,
+        "publishedDate" : ISODate("2000-10-01T07:00:00Z"),
+        "status" : "PUBLISH",
+        "authors" : [ ],
+        "categories" : [ ]
+}
+> db.livros.find({title: /Windows/}).count()
+11
+> db.livros.find({title: /Windows/},{title:1,_id:0})
+{ "title" : "Learn Windows PowerShell in a Month of Lunches" }
+{ "title" : "Windows PowerShell in Action" }
+{ "title" : "Windows PowerShell in Action, Second Edition" }
+{ "title" : "Windows Phone 7 in Action" }
+{ "title" : "Windows Store App Development: C# and XAML" }
+{ "title" : "Learn Windows IIS in a Month of Lunches" }
+{ "title" : "Learn Windows PowerShell in a Month of Lunches, Second Edition" }
+{ "title" : "Windows Phone 8 in Action" }
+{ "title" : "Windows Forms Programming with C#" }
+{ "title" : "Windows Forms in Action" }
+{ "title" : "Programming Windows Server 2003" }
+> db.livros.find({},{"pageCount":1,"_id":0}).limit(2).sort({"pageCount":-1})
+{ "pageCount" : 1101 }
+{ "pageCount" : 1096 }
